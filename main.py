@@ -1,16 +1,22 @@
+import os
+
 import cv2
 import numpy as np
+from dotenv import load_dotenv
 from keras.models import load_model
 
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
+
+load_dotenv()
 model = load_model("./model-010.h5")
 
-results = {0: 'without mask', 1: 'mask'}
+results = {0: 'no mask', 1: 'mask'}
 GR_dict = {0: (0, 0, 255), 1: (0, 255, 0)}
 
 rect_size = 4
 cap = cv2.VideoCapture(0)
 
-haarcascade = cv2.CascadeClassifier("C:/Users/km169/Documents/Projects/Real-Time Face Mask Detector/face-mask-detector/env/Lib/site-packages/cv2/data/haarcascade_frontalface_default.xml")
+haarcascade = cv2.CascadeClassifier(os.getenv("CASCADE_CLASSIFIER"))
 
 while True:
     (rval, im) = cap.read()
